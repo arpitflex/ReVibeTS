@@ -1,4 +1,9 @@
-import {ActivityType, Client, GatewayIntentBits} from "discord.js";
+import {
+  ActivityType,
+  ApplicationCommandOptionType,
+  Client,
+  GatewayIntentBits,
+} from "discord.js";
 import {
   Command,
   createClearCommand,
@@ -15,11 +20,12 @@ import {
   createStopCommand,
   handleSlashCommand,
   PlayerManager,
+  Track,
   trackToMarkdown,
   urlToMarkdown,
 } from "discord-player-plus";
-import {config} from "./config";
-import {playTracks} from "discord-player-plus/lib/commands";
+import { config } from "./config";
+import { playTracks } from "discord-player-plus/lib/commands";
 
 // Discord client for the Music Bot
 const client: Client = new Client({
@@ -59,6 +65,108 @@ myPlayCommand.run = async function run(interaction) {
   return true;
 };
 
+const myRemoveCommand: Command = {
+  name: "remove",
+  description: "Removes a song from the queue.",
+  options: [
+    {
+      name: "track_number",
+      description: "Track number of song to remove.",
+      type: ApplicationCommandOptionType.Integer,
+      required: true,
+    },
+  ],
+  run: async (interaction) => {
+    const player = playerManager.find(interaction.guildId);
+
+    if (!player) {
+      await interaction.reply({
+        content: ":robot: I am currently not in the channel.",
+        ephemeral: true,
+      });
+      return false;
+    }
+
+    const queue: Track[] = player.getQueue();
+    const trackNumber: number = interaction.options.getInteger(
+      "track_number",
+      true
+    );
+    const removed: Track | undefined = player.remove(trackNumber - 1);
+
+    if (!removed) {
+      await interaction.reply({
+        content: `Track **${trackNumber}** is not in queue of currently **${queue.length}** tracks`,
+        ephemeral: true,
+      });
+      return false;
+    }
+
+    await interaction.reply({
+      content: `:wastebasket: | Removed **${removed.title}** from queue`,
+    });
+    return true;
+  },
+};
+
+const myJumpCommand: Command = {
+  name: "jump",
+  description: "Jumps to a track in the queue.",
+  options: [
+    {
+      name: "track_number",
+      description: "Track number of song to jump to.",
+      type: ApplicationCommandOptionType.Integer,
+      required: true,
+    },
+  ],
+  run: async (interaction) => {
+    const player = playerManager.find(interaction.guildId);
+
+    if (!player) {
+      await interaction.reply({
+        content: ":robot: I am currently not in the channel.",
+        ephemeral: true,
+      });
+      return false;
+    }
+
+    const channel = player.getVoiceChannel();
+
+    if (!channel) {
+      await interaction.reply({
+        content: ":robot: I am currently not in the voice channel.",
+        ephemeral: true,
+      });
+      return false;
+    }
+
+    const queue: Track[] = player.getQueue();
+    const trackNumber: number = interaction.options.getInteger(
+      "track_number",
+      true
+    );
+
+    if (trackNumber <= 0 || trackNumber > queue.length) {
+      await interaction.reply({
+        content: `Track **${trackNumber}** is not in queue of currently **${queue.length}** tracks`,
+      });
+      return false;
+    }
+
+    player.clear();
+    await player.play({
+      tracks: queue.slice(trackNumber - 1),
+      channel: channel,
+    });
+
+    await interaction.reply({
+      content: `:arrow_right_hook: | Jumped to track **${trackNumber}** in queue`,
+    });
+    return true;
+  },
+};
+
 // All slash commands for the bot
 const slashCommands: Command[] = [
   createClearCommand(playerManager),
@@ -71,7 +179,9 @@ const slashCommands: Command[] = [
   createStopCommand(playerManager),
   createRepeatCommand(playerManager),
   createSeekCommand(playerManager),
-  myPlayCommand
+  myPlayCommand,
+  myRemoveCommand,
+  myJumpCommand,
 ];
 
 slashCommands.push(
@@ -82,7 +192,7 @@ slashCommands.push(
       name: "Arpit Agrawal",
     },
     footerText: "Thanks for using ReVibe",
-  }),
+  })
 );
 
 client
