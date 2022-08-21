@@ -1,7 +1,6 @@
-import { ActivityType, Client, GatewayIntentBits } from "discord.js";
+import {ActivityType, Client, GatewayIntentBits} from "discord.js";
 import {
   Command,
-  createAddCommand,
   createClearCommand,
   createHelpCommand,
   createPauseCommand,
@@ -16,8 +15,11 @@ import {
   createStopCommand,
   handleSlashCommand,
   PlayerManager,
+  trackToMarkdown,
+  urlToMarkdown,
 } from "discord-player-plus";
-import { config } from "./config";
+import {config} from "./config";
+import {playTracks} from "discord-player-plus/lib/commands";
 
 // Discord client for the Music Bot
 const client: Client = new Client({
@@ -32,12 +34,35 @@ export const playerManager = new PlayerManager({
   playerDefault: config.player,
 });
 
+const myPlayCommand: Command = createPlayCommand(playerManager);
+
+myPlayCommand.run = async function run(interaction) {
+  const searchResult = await playTracks(interaction, playerManager, false);
+  if (!searchResult) return false;
+
+  if (searchResult.playlist) {
+    await interaction.followUp({
+      content: playerManager.translations.play.successPlaylist.replace(
+        "{playlist}",
+        urlToMarkdown(searchResult.playlist.title, searchResult.playlist.url)
+      ),
+    });
+    return true;
+  }
+
+  await interaction.followUp({
+    content: playerManager.translations.play.successTrack.replace(
+      "{track}",
+      trackToMarkdown(searchResult.tracks[0])
+    ),
+  });
+  return true;
+};
+
 // All slash commands for the bot
 const slashCommands: Command[] = [
-  createAddCommand(playerManager),
   createClearCommand(playerManager),
   createPauseCommand(playerManager),
-  createPlayCommand(playerManager),
   createQueueCommand(playerManager, { ephemeral: true }),
   createResumeCommand(playerManager),
   createShuffleCommand(playerManager),
@@ -46,6 +71,7 @@ const slashCommands: Command[] = [
   createStopCommand(playerManager),
   createRepeatCommand(playerManager),
   createSeekCommand(playerManager),
+  myPlayCommand
 ];
 
 slashCommands.push(
@@ -56,7 +82,7 @@ slashCommands.push(
       name: "Arpit Agrawal",
     },
     footerText: "Thanks for using ReVibe",
-  })
+  }),
 );
 
 client
