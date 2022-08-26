@@ -17,11 +17,13 @@ import {
   createShuffleCommand,
   createSkipCommand,
   createSongCommand,
-  createStopCommand, en,
+  createStopCommand,
+  en,
   handleSlashCommand,
   PlayerManager,
   Track,
-  trackToMarkdown, Translations,
+  trackToMarkdown,
+  Translations,
   urlToMarkdown,
 } from "discord-player-plus";
 import { config } from "./config";
@@ -39,11 +41,11 @@ const client: Client = new Client({
 const customTranslations: Translations = en;
 
 customTranslations.play.description = "Plays a song/playlist.";
-customTranslations.stop.success = ":wave: | Hou doe!"
+customTranslations.stop.success = ":wave: | Hou doe!";
 
 export const playerManager = new PlayerManager({
   playerDefault: config.player,
-  translations: customTranslations
+  translations: customTranslations,
 });
 
 const myPlayCommand: Command = createPlayCommand(playerManager);
