@@ -8,3 +8,9 @@ For example:
 # https://discord.com/developers/applications
 CLIENT_TOKEN=NzkyNzE1NDU0MTk2MDg4ODQy.X-hvzA.Ovy4MCQywSkoMRRclStW4xAYK7I
 ```
+
+## Spotify
+
+Spotify authorization is done through `.data` folder. That folder contains the `spotify.data` file used to store the
+Spotify credentials. This folder is not tracked by git, so you will have to create it yourself. Use these
+[instructions](https://github.com/play-dl/play-dl/tree/main/instructions) to generate the credentials.
