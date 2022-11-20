@@ -226,9 +226,9 @@ const myInsertCommand: Command = {
         const index = interaction.options.getInteger("location_number", true) - 1;
         player.insert(track, index);
 
-        let readableIndex = index;
+        let readableIndex = index + 1;
         if (index < 0) {
-            readableIndex = 0;
+            readableIndex = 1;
         }
         const queueLength = player.getQueue().length;
         if (index > queueLength) {
