@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/ViperFlex/ReVibeTS#readme",
   "dependencies": {
-    "discord-player-plus": "^1.4.2",
-    "discord.js": "^14.6.0",
+    "discord-player-plus": "^1.4.3",
+    "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "play-dl": "^1.9.6",
     "ts-node": "^10.9.1"
