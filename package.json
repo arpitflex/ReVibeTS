@@ -1,7 +1,7 @@
 {
   "name": "revibets",
   "version": "1.0.0",
-  "description": "Because all the other music bots suck (including my previous one).",
+  "description": "Because all the other music bots suck (including my previous one). Made by someone who's vibe was ruined.",
   "main": "src/app.ts",
   "private": true,
   "scripts": {
