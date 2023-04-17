@@ -1,0 +1,7 @@
+services:
+  revibe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: revibe
+    restart: always
