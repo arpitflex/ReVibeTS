@@ -23,19 +23,19 @@
   },
   "homepage": "https://github.com/ViperFlex/ReVibeTS#readme",
   "dependencies": {
-    "discord-player-plus": "^1.5.1",
-    "discord.js": "^14.9.0",
+    "discord-player-plus": "^1.5.2",
+    "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
     "play-dl": "^1.9.6",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.58.0",
-    "@typescript-eslint/parser": "^5.58.0",
-    "eslint": "^8.38.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.7",
+    "prettier": "^2.8.8",
     "ts-node-dev": "^2.0.0"
   }
 }
