@@ -1,15 +1,14 @@
 {
   "name": "revibets",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Because all the other music bots suck (including my previous one). Made by someone who's vibe was ruined.",
-  "main": "src/app.ts",
+  "main": "./dist/index.js",
+  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev .",
-    "build": "tsc",
-    "start": "ts-node .",
-    "lint": "tsc --noEmit && eslint --fix src",
-    "format": "prettier --write src --ignore-path .gitignore",
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "start": "node .",
+    "lint": "eslint src --fix --ignore-path .gitignore",
     "update": "npx npm-check-updates -i"
   },
   "repository": {
@@ -17,25 +16,27 @@
     "url": "git+https://github.com/ViperFlex/ReVibeTS.git"
   },
   "author": "Arpit Agrawal",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ViperFlex/ReVibeTS/issues"
   },
   "homepage": "https://github.com/ViperFlex/ReVibeTS#readme",
   "dependencies": {
-    "discord-player-plus": "^1.5.2",
+    "discord-player-plus": "^2.0.0",
     "discord.js": "^14.11.0",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.2.0",
     "play-dl": "^1.9.6",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.7",
-    "@typescript-eslint/parser": "^5.59.7",
-    "eslint": "^8.41.0",
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/parser": "^5.59.11",
+    "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
-    "ts-node-dev": "^2.0.0"
+    "tsup": "^6.7.0",
+    "typescript": "^5.1.3"
   }
 }

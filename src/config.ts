@@ -1,9 +1,10 @@
 import { PlayerOptions } from "discord-player-plus";
 import "dotenv/config";
-import path from "path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "url";
 import { customSpotifyEngine } from "./engines/CustomSpotify";
 
-export const config: Config = {
+export const config = {
   app: {
     clientToken: process.env.CLIENT_TOKEN ?? "",
   },
@@ -12,13 +13,6 @@ export const config: Config = {
       spotify: customSpotifyEngine,
     },
     initialVolume: 20,
-    fileRoot: path.join(__dirname, "../public"),
-  },
+    fileRoot: resolve(dirname(fileURLToPath(import.meta.url)), "../public"),
+  } satisfies PlayerOptions,
 };
-
-interface Config {
-  app: {
-    clientToken: string;
-  };
-  player: PlayerOptions;
-}

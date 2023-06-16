@@ -1,12 +1,13 @@
-import { ActivityType, Client, GatewayIntentBits } from "discord.js";
 import {
   Command,
+  PlayerManager,
+  Translations,
+  createAddCommand,
   createClearCommand,
   createHelpCommand,
   createInsertCommand,
   createJumpCommand,
   createPauseCommand,
-  createPlayCommand,
   createQueueCommand,
   createRemoveCommand,
   createRepeatCommand,
@@ -18,13 +19,9 @@ import {
   createStopCommand,
   en,
   handleSlashCommand,
-  PlayerManager,
-  trackToMarkdown,
-  Translations,
-  urlToMarkdown,
 } from "discord-player-plus";
+import { ActivityType, Client, GatewayIntentBits } from "discord.js";
 import { config } from "./config";
-import { playTracks } from "discord-player-plus/lib/commands";
 
 // Discord client for the Music Bot
 const client: Client = new Client({
@@ -37,7 +34,6 @@ const client: Client = new Client({
 
 const customTranslations: Translations = en;
 
-customTranslations.play.description = "Plays a song/playlist.";
 customTranslations.stop.success = ":wave: | Hou doe!";
 
 export const playerManager = new PlayerManager({
@@ -45,30 +41,8 @@ export const playerManager = new PlayerManager({
   translations: customTranslations,
 });
 
-const myPlayCommand: Command = createPlayCommand(playerManager);
-
-myPlayCommand.run = async function run(interaction) {
-  const searchResult = await playTracks(interaction, playerManager, false);
-  if (!searchResult) return false;
-
-  if (searchResult.playlist) {
-    await interaction.followUp({
-      content: playerManager.translations.play.successPlaylist.replace(
-        "{playlist}",
-        urlToMarkdown(searchResult.playlist.title, searchResult.playlist.url)
-      ),
-    });
-    return true;
-  }
-
-  await interaction.followUp({
-    content: playerManager.translations.play.successTrack.replace(
-      "{track}",
-      trackToMarkdown(searchResult.tracks[0])
-    ),
-  });
-  return true;
-};
+const myPlayCommand: Command = createAddCommand(playerManager);
+myPlayCommand.name = "play";
 
 // All slash commands for the bot
 const slashCommands: Command[] = [
