@@ -7,7 +7,6 @@
   "private": true,
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
-    "prestart": "npm run build",
     "start": "node .",
     "lint": "eslint src --fix --ignore-path .gitignore",
     "update": "npx npm-check-updates -i"
